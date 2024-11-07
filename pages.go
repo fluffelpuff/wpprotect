@@ -16,18 +16,21 @@ var templates *template.Template
 type ThirdPartyProvider struct {
 }
 
+type LangSpeficData struct {
+	WebsiteLang                      string
+	LangEMailInputFieldHiddenText    string
+	LangPasswordInputFieldHiddenText string
+	LangLogonButtonText              string
+}
+
 type PageData struct {
-	Lang                   string
+	Lang                   *LangSpeficData
 	PageTitel              string
 	ModalTitle             string
 	BsThemeDark            string
 	WebsiteName            string
 	HasThirdPartyProviders bool
 	ThirdPartyProviders    []*ThirdPartyProvider
-
-	LangEMailInputFieldHiddenText    string
-	LangPasswordInputFieldHiddenText string
-	LangLogonButtonText              string
 }
 
 func initPages() {
@@ -44,7 +47,10 @@ func initPages() {
 		ModalTitle:             "Anmeldung",
 		HasThirdPartyProviders: false,
 		BsThemeDark:            "auto",
-		Lang:                   "de",
+		Lang: &LangSpeficData{
+			WebsiteLang:                   "de",
+			LangEMailInputFieldHiddenText: "E-Mail Adresse",
+		},
 	}
 
 	// Stellt die Seiten bereit
