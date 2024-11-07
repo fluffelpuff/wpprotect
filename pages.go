@@ -21,7 +21,7 @@ type LangSpeficData struct {
 	EMailInputFieldHiddenText    string
 	PasswordInputFieldHiddenText string
 	LogonButtonText              string
-	HelpTextUnderLogonButton     string
+	HelpTextUnderLogonButton     template.HTML
 }
 
 type PageData struct {
@@ -37,7 +37,7 @@ type PageData struct {
 var german = &LangSpeficData{
 	WebsiteLang:                  "de",
 	EMailInputFieldHiddenText:    "E-Mail Adresse",
-	HelpTextUnderLogonButton:     "Indem Sie auf „Anmelden“ klicken, stimmen Sie den <a href=\"test\">Nutzungsbedingungen</a> zu.",
+	HelpTextUnderLogonButton:     template.HTML(`Indem Sie auf „Anmelden“ klicken, stimmen Sie den <a href="test">Nutzungsbedingungen</a> zu.`),
 	PasswordInputFieldHiddenText: "Passwort",
 	LogonButtonText:              "Anmelden",
 }
