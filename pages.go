@@ -12,6 +12,9 @@ var webFiles embed.FS
 var templates *template.Template
 
 func initPages() {
+	// Templates initialisieren
+	templates = template.Must(template.ParseFS(webFiles, "web/*.html"))
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		var tmplName string
 
@@ -29,7 +32,7 @@ func initPages() {
 		// Template ausführen
 		err := templates.ExecuteTemplate(w, tmplName, nil)
 		if err != nil {
-			http.Error(w, "Fehler beim Ausführen des Templates", http.StatusInternalServerError)
+			http.Error(w, "Fehler beim Ausführen des Templates: "+err.Error(), http.StatusInternalServerError)
 		}
 	})
 
@@ -42,7 +45,7 @@ func initPages() {
 		}
 
 		// Content-Type setzen und Datei senden
-		w.Header().Set("Content-Type", "text/html")
+		w.Header().Set("Content-Type", "text/css")
 		w.Write(data)
 	})
 }
