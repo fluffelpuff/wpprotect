@@ -37,7 +37,7 @@ type PageData struct {
 var german = &LangSpeficData{
 	WebsiteLang:                  "de",
 	EMailInputFieldHiddenText:    "E-Mail Adresse",
-	HelpTextUnderLogonButton:     "Indem Sie auf „Anmelden“ klicken, stimmen Sie den Nutzungsbedingungen zu.",
+	HelpTextUnderLogonButton:     "Indem Sie auf „Anmelden“ klicken, stimmen Sie den <a href=\"test\">Nutzungsbedingungen</a> zu.",
 	PasswordInputFieldHiddenText: "Passwort",
 	LogonButtonText:              "Anmelden",
 }
