@@ -3,6 +3,8 @@ package main
 import (
 	"embed"
 	"fmt"
+	"html/template"
+	"log"
 	"net/http"
 )
 
@@ -10,6 +12,12 @@ import (
 var webFiles embed.FS
 
 func initPages() {
+	var err error
+	tmpl, err := template.ParseFS(webFiles, "web/layout.html", "web/index.html", "web/logon.html")
+	if err != nil {
+		log.Fatalf("Fehler beim Parsen der Templates: %v", err)
+	}
+
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		fmt.Println("/")
 		// Datei lesen
@@ -25,18 +33,16 @@ func initPages() {
 	})
 
 	http.HandleFunc("/logon", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println("/logon")
-		// Datei lesen
-		data, err := webFiles.ReadFile("web/logon.html")
-		if err != nil {
-			fmt.Println(err)
-			http.Error(w, "Datei nicht gefunden", http.StatusNotFound)
-			return
+		data := struct {
+			Title string
+		}{
+			Title: "Login",
 		}
-
-		// Content-Type setzen und Datei senden
-		w.Header().Set("Content-Type", "text/html")
-		w.Write(data)
+		// Nutzt layout.html und logon.html
+		err := tmpl.ExecuteTemplate(w, "layout.html", data)
+		if err != nil {
+			http.Error(w, "Fehler beim Rendern des Templates", http.StatusInternalServerError)
+		}
 	})
 
 	http.HandleFunc("/css/modal.css", func(w http.ResponseWriter, r *http.Request) {
