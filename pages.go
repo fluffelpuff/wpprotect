@@ -13,10 +13,21 @@ var webFiles embed.FS
 
 var templates *template.Template
 
+type ThirdPartyProvider struct {
+}
+
 type PageData struct {
-	Title       string
-	Lang        string
-	BsThemeDark string
+	Lang                   string
+	PageTitel              string
+	ModalTitle             string
+	BsThemeDark            string
+	WebsiteName            string
+	HasThirdPartyProviders bool
+	ThirdPartyProviders    []*ThirdPartyProvider
+
+	LangEMailInputFieldHiddenText    string
+	LangPasswordInputFieldHiddenText string
+	LangLogonButtonText              string
 }
 
 func initPages() {
@@ -28,15 +39,15 @@ func initPages() {
 
 	// Seiten Daten
 	data := PageData{
-		BsThemeDark: "auto",
-		Lang:        "de",
+		ThirdPartyProviders:    make([]*ThirdPartyProvider, 0),
+		WebsiteName:            "Fluffel's SecureZone",
+		ModalTitle:             "Anmeldung",
+		HasThirdPartyProviders: false,
+		BsThemeDark:            "auto",
+		Lang:                   "de",
 	}
 
-	// Geladene Templates auflisten
-	for _, tmpl := range templates.Templates() {
-		log.Printf("Geladenes Template: %s", tmpl.Name())
-	}
-
+	// Stellt die Seiten bereit
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		var tmplName string
 
@@ -44,10 +55,10 @@ func initPages() {
 		switch r.URL.Path {
 		case "/logon", "/logon.html":
 			tmplName = "logon.html"
-			data.Title = "Anmeldung"
+			data.PageTitel = "Anmeldung"
 		case "/register", "/register.html":
 			tmplName = "logon.html"
-			data.Title = "Registrieren"
+			data.PageTitel = "Registrieren"
 		default:
 			http.NotFound(w, r)
 			return
