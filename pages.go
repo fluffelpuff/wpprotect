@@ -17,6 +17,7 @@ func initPages() {
 			http.Error(w, "Datei nicht gefunden", http.StatusNotFound)
 			return
 		}
+
 		// Content-Type setzen und Datei senden
 		w.Header().Set("Content-Type", "text/html")
 		w.Write(data)
