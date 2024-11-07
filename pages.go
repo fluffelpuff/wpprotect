@@ -17,10 +17,11 @@ type ThirdPartyProvider struct {
 }
 
 type LangSpeficData struct {
-	WebsiteLang                      string
-	LangEMailInputFieldHiddenText    string
-	LangPasswordInputFieldHiddenText string
-	LangLogonButtonText              string
+	WebsiteLang                  string
+	EMailInputFieldHiddenText    string
+	PasswordInputFieldHiddenText string
+	LogonButtonText              string
+	HelpTextUnderLogonButton     string
 }
 
 type PageData struct {
@@ -31,6 +32,14 @@ type PageData struct {
 	WebsiteName            string
 	HasThirdPartyProviders bool
 	ThirdPartyProviders    []*ThirdPartyProvider
+}
+
+var german = &LangSpeficData{
+	WebsiteLang:                  "de",
+	EMailInputFieldHiddenText:    "E-Mail Adresse",
+	HelpTextUnderLogonButton:     "Indem Sie auf „Anmelden“ klicken, stimmen Sie den Nutzungsbedingungen zu.",
+	PasswordInputFieldHiddenText: "Passwort",
+	LogonButtonText:              "Anmelden",
 }
 
 func initPages() {
@@ -47,10 +56,7 @@ func initPages() {
 		ModalTitle:             "Anmeldung",
 		HasThirdPartyProviders: false,
 		BsThemeDark:            "auto",
-		Lang: &LangSpeficData{
-			WebsiteLang:                   "de",
-			LangEMailInputFieldHiddenText: "E-Mail Adresse",
-		},
+		Lang:                   german,
 	}
 
 	// Stellt die Seiten bereit
