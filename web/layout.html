@@ -13,6 +13,27 @@
       <meta name="theme-color" content="#712cf9">
 
       <style>
+         /* Make the footer transparent */
+         .transparent-footer {
+            background-color: transparent;
+            padding-bottom: 10px; /* Adds some space at the bottom */
+        }
+
+        /* Ensure the modal content doesn't overlap with the fixed footer */
+        @media (max-width: 768px) {
+            #modalSignin .modal-dialog {
+                margin-bottom: 70px; /* Adjusts space for the fixed footer on smaller screens */
+            }
+        }
+
+        /* Optional: Slightly increase font size and padding for larger screens */
+        @media (min-width: 769px) {
+            .transparent-footer p {
+                font-size: 1rem;
+                padding-bottom: 5px;
+            }
+        }
+
         .bd-placeholder-img {
           font-size: 1.125rem;
           text-anchor: middle;
@@ -94,9 +115,53 @@
       <!-- Custom styles for this template -->
       <link href="css/modal.css" rel="stylesheet">
     </head>
-    <body class="bg-body-secondary">
+    <body class="bg-body-secondary d-flex flex-column min-vh-100">
         {{ block "content" . }}{{ end }}
+        <!-- Transparent Footer at the Bottom of the Page -->
+        <footer class="text-center text-muted py-3 mb-3 mt-auto transparent-footer">
+          <div class="container">
+              <p class="mb-0" style="font-size: 0.9rem; font-weight: 500;">Powered by</p>
+              <p class="mb-0" style="font-size: 1.0rem; font-weight: 500;">OpenWebServiceShield</p>
+          </div>
+        </footer>
         <script src="/docs/5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+        <script>
+          document.addEventListener('DOMContentLoaded', function() {
+              const form = document.getElementById('loginForm');
+          
+              form.addEventListener('submit', function(event) {
+                  event.preventDefault(); // Verhindert das Standardverhalten des Formulars (Seiten-Neuladen)
+          
+                  // Erstelle ein FormData-Objekt aus dem Formular
+                  const formData = new FormData(form);
+          
+                  // Sende die Daten mit fetch per POST an den Server
+                  fetch(form.action, {
+                      method: 'POST',
+                      body: formData,
+                      headers: {
+                          'X-Requested-With': 'XMLHttpRequest'
+                      }
+                  })
+                  .then(response => {
+                      if (response.ok) {
+                          return response.json(); // Erwartet eine JSON-Antwort vom Server
+                      } else {
+                          throw new Error('Ein Fehler ist aufgetreten');
+                      }
+                  })
+                  .then(data => {
+                      // Verarbeite die Antwort vom Server
+                      console.log(data);
+                      // Hier kannst du z.B. den Nutzer weiterleiten oder eine Erfolgsmeldung anzeigen
+                  })
+                  .catch(error => {
+                      console.error(error);
+                      // Fehlerbehandlung, z.B. Fehlermeldung anzeigen
+                  });
+              });
+          });
+      </script>
     </body>
 </html>
 {{ end }}

@@ -1,1 +1,1 @@
-# wpprotect
+# OpenWebServiceShield

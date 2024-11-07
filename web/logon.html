@@ -57,16 +57,16 @@
                 <h1 class="fw-bold mb-0 fs-2">{{ .ModalTitle }}</h1>
             </div>
             <div class="modal-body p-5 pt-0">
-                <form class="">
+                <form id="meinFormular" method="post">
                     <div class="form-floating mb-3">
-                        <input type="email" class="form-control rounded-3" id="floatingInput" placeholder="name@example.com">
-                        <label for="floatingInput">{{.Lang.EMailInputFieldHiddenText}}</label>
+                        <input type="text" class="form-control rounded-3" id="floatingInput" placeholder="name@example.com">
+                        <label for="floatingInput">{{.Lang.EMailUsernameInputFieldHiddenText}}</label>
                     </div>
                     <div class="form-floating mb-3">
                         <input type="password" class="form-control rounded-3" id="floatingPassword" placeholder="Password">
                         <label for="floatingPassword">{{.Lang.PasswordInputFieldHiddenText}}</label>
                     </div>
-                    <button class="w-100 mb-2 btn btn-lg rounded-3 btn-primary" type="submit">{{.Lang.LogonButtonText}}</button>
+                    <button class="w-100 mb-2 btn btn-sm rounded-3 btn-primary" type="submit">{{.Lang.LogonButtonText}}</button>
                     <small class="text-body-secondary">{{.Lang.HelpTextUnderLogonButton}}</small>
                     {{ if .HasThirdPartyProviders }}
                     <hr class="my-4">
@@ -85,9 +85,12 @@
                     </button>
                     {{ end }}
                 </form>
-                <a href="Logon"></a>
-                <a href="Logon"></a>
-                <a href="Logon"></a>
+                <hr class="my-4">
+                <a class="me-2" href="test">Impressum</a>
+                <a class="me-2" href="test">Datenschutzerklärung</a>
+                <a class="me-2" href="test">Nutzungsbedingungen</a>
+                <a class="me-2" href="test">Kontakt/Support</a>
+                <a class="me-2"href="test">Allgemeine Geschäftsbedingungen (AGB)</a>
             </div>
         </div>
     </div>

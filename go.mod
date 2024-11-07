@@ -1,3 +1,3 @@
-module wpprotect
+module OpenWebServiceShield
 
 go 1.23
