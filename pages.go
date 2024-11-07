@@ -30,8 +30,6 @@ func initPages() {
 
 		// Bestimmen, welche Seite gerendert werden soll
 		switch r.URL.Path {
-		case "/", "/index.html":
-			tmplName = "index.html"
 		case "/logon", "/logon.html":
 			tmplName = "logon.html"
 		default:
