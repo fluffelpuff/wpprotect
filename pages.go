@@ -2,46 +2,34 @@ package main
 
 import (
 	"embed"
-	"fmt"
 	"html/template"
-	"log"
 	"net/http"
 )
 
 //go:embed web/*
 var webFiles embed.FS
 
-func initPages() {
-	var err error
-	tmpl, err := template.ParseFS(webFiles, "web/layout.html", "web/index.html", "web/logon.html")
-	if err != nil {
-		log.Fatalf("Fehler beim Parsen der Templates: %v", err)
-	}
+var templates *template.Template
 
+func initPages() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println("/")
-		// Datei lesen
-		data, err := webFiles.ReadFile("web/index.html")
-		if err != nil {
-			http.Error(w, "Datei nicht gefunden", http.StatusNotFound)
+		var tmplName string
+
+		// Bestimmen, welche Seite gerendert werden soll
+		switch r.URL.Path {
+		case "/":
+			tmplName = "index.html"
+		case "/logon":
+			tmplName = "logon.html"
+		default:
+			http.NotFound(w, r)
 			return
 		}
 
-		// Content-Type setzen und Datei senden
-		w.Header().Set("Content-Type", "text/html")
-		w.Write(data)
-	})
-
-	http.HandleFunc("/logon", func(w http.ResponseWriter, r *http.Request) {
-		data := struct {
-			Title string
-		}{
-			Title: "Login",
-		}
-		// Nutzt layout.html und logon.html
-		err := tmpl.ExecuteTemplate(w, "layout.html", data)
+		// Template ausführen
+		err := templates.ExecuteTemplate(w, tmplName, nil)
 		if err != nil {
-			http.Error(w, "Fehler beim Rendern des Templates", http.StatusInternalServerError)
+			http.Error(w, "Fehler beim Ausführen des Templates", http.StatusInternalServerError)
 		}
 	})
 
