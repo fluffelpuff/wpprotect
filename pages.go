@@ -6,6 +6,7 @@ import (
 	"net/http"
 )
 
+//go:embed web/*
 var webFiles embed.FS
 
 func initPages() {
