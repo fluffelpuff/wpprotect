@@ -28,6 +28,7 @@ func initPages() {
 		// Datei lesen
 		data, err := webFiles.ReadFile("web/logon.html")
 		if err != nil {
+			fmt.Println(err)
 			http.Error(w, "Datei nicht gefunden", http.StatusNotFound)
 			return
 		}
