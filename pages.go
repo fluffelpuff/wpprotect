@@ -2,6 +2,7 @@ package main
 
 import (
 	"embed"
+	"fmt"
 	"net/http"
 )
 
@@ -9,6 +10,7 @@ var webFiles embed.FS
 
 func initPages() {
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("/")
 		// Datei lesen
 		data, err := webFiles.ReadFile("web/index.html")
 		if err != nil {
@@ -22,6 +24,7 @@ func initPages() {
 	})
 
 	http.HandleFunc("/logon", func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("/logon")
 		// Datei lesen
 		data, err := webFiles.ReadFile("web/logon.html")
 		if err != nil {
