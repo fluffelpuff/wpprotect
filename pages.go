@@ -3,6 +3,8 @@ package main
 import (
 	"embed"
 	"html/template"
+	"io/fs"
+	"log"
 	"net/http"
 )
 
@@ -12,40 +14,47 @@ var webFiles embed.FS
 var templates *template.Template
 
 func initPages() {
-	// Templates initialisieren
-	templates = template.Must(template.ParseFS(webFiles, "web/*.html"))
+	var err error
+	templates, err = template.ParseFS(webFiles, "web/*.html")
+	if err != nil {
+		log.Fatalf("Fehler beim Parsen der Templates: %v", err)
+	}
+
+	// Geladene Templates auflisten
+	for _, tmpl := range templates.Templates() {
+		log.Printf("Geladenes Template: %s", tmpl.Name())
+	}
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		var tmplName string
 
 		// Bestimmen, welche Seite gerendert werden soll
 		switch r.URL.Path {
-		case "/":
+		case "/", "/index.html":
 			tmplName = "index.html"
-		case "/logon":
+		case "/logon", "/logon.html":
 			tmplName = "logon.html"
 		default:
 			http.NotFound(w, r)
 			return
 		}
 
+		// Content-Type setzen
+		w.Header().Set("Content-Type", "text/html; charset=utf-8")
+
 		// Template ausführen
 		err := templates.ExecuteTemplate(w, tmplName, nil)
 		if err != nil {
+			log.Printf("Fehler beim Ausführen des Templates %s: %v", tmplName, err)
 			http.Error(w, "Fehler beim Ausführen des Templates: "+err.Error(), http.StatusInternalServerError)
-		}
-	})
-
-	http.HandleFunc("/css/modal.css", func(w http.ResponseWriter, r *http.Request) {
-		// Datei lesen
-		data, err := webFiles.ReadFile("web/css/modal.css")
-		if err != nil {
-			http.Error(w, "Datei nicht gefunden", http.StatusNotFound)
 			return
 		}
-
-		// Content-Type setzen und Datei senden
-		w.Header().Set("Content-Type", "text/css")
-		w.Write(data)
 	})
+
+	// Statische Dateien bedienen
+	cssFiles, err := fs.Sub(webFiles, "web/css")
+	if err != nil {
+		log.Fatalf("Fehler beim Zugriff auf CSS-Dateien: %v", err)
+	}
+	http.Handle("/css/", http.StripPrefix("/css/", http.FileServer(http.FS(cssFiles))))
 }
