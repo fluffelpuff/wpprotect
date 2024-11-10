@@ -13,13 +13,14 @@
       <meta name="theme-color" content="#712cf9">
 
       <style>
-        /* Verhindert horizontales Scrollen und ermöglicht vertikales Scrollen */
+        /* Verhindert jegliches horizontales Scrollen */
         html, body {
-          overflow-x: hidden; /* Verhindert horizontales Scrollen */
-          overflow-y: auto; /* Ermöglicht vertikales Scrollen */
+          width: 100%; /* Verhindert Überlauf */
+          max-width: 100%; /* Verhindert horizontales Scrollen */
+          overflow-x: hidden; /* Deaktiviert horizontales Scrollen */
           margin: 0;
           padding: 0;
-          width: 100vw; /* Stellt sicher, dass der Inhalt nicht breiter als der Viewport ist */
+          contain: content; /* Schränkt das Layout auf den Body ein */
         }
 
         /* Flexbox-Zentrierung des Inhalts */
@@ -28,6 +29,7 @@
           align-items: center;
           justify-content: center;
           min-height: 100vh;
+          overflow-y: auto; /* Ermöglicht vertikales Scrollen */
         }
 
         /* Hauptinhalt, zentriert */
@@ -45,6 +47,7 @@
         /* Abschnitt direkt unter dem Hauptinhalt */
         .sub-content {
           margin-top: 2rem;
+          margin-bottom: 25px;
           font-size: 0.9rem;
           font-weight: 500;
           text-align: center;
