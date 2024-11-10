@@ -10,7 +10,7 @@ import (
 func initPages() {
 	// Die Template Dateien werden eingelesen
 	var err error
-	templates, err = template.ParseFS(webFiles, "web/*.html")
+	templates, err = template.ParseFS(webFiles, "web/html/*.html")
 	if err != nil {
 		log.Fatalf("Fehler beim Parsen der Templates: %v", err)
 	}
